@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: pos-client
+
+logging:
+  level:
+    root: info;
+    com:
+      cumple:
+        pos: debug
+  file:
+    name: C:\\Pos\\logs\\pos.log
