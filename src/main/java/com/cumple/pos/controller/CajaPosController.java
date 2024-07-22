@@ -29,9 +29,9 @@ public class CajaPosController {
     }
 
     @GetMapping("/listaPuertosCom")
-    public ResponseEntity<?> listaPuertosCom() {
+    public ResponseEntity<Map<String,String>> listaPuertosCom() {
         try {
-            Map<String,String> puertos =  cajaPosService.listarPuerto();
+            Map<String,String> puertos =  cajaPosService.listarPuertos();
             return ResponseEntity.ok(puertos);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
