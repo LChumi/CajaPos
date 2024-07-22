@@ -29,7 +29,10 @@ public class CajaPosService {
         POS pos = new POS(false);
         try {
             ProcesarPagoCommand command = new ProcesarPagoCommand(pos,datosEnvio, puerto);
-            return command.exceute();
+            DatosRecepcion dRecepcion = command.exceute();
+
+            validarDatosRecepcion(dRecepcion);
+            return dRecepcion;
         }catch (Exception e){
             log.error("Ocurrio un problema al procesar el pago en el puerto: {} , message: {} ",puerto,e.getMessage());
             throw  new Exception("ERROR "+e.getMessage());
@@ -46,7 +49,10 @@ public class CajaPosService {
         POS pos = new POS(false);
         try {
             AnularPagoCommand command = new AnularPagoCommand(pos,puerto,numeroReferencia);
-            return command.exceute();
+            DatosRecepcion dRecepcion = command.exceute();
+
+            validarDatosRecepcion(dRecepcion);
+            return dRecepcion;
         }catch (Exception e){
             log.error("Ocurrio un problema al anular el pago en el puert: {}, message: {}",puerto,e.getMessage());
             throw new RuntimeException("ERROR "+e.getMessage());
@@ -63,7 +69,10 @@ public class CajaPosService {
         POS pos = new POS(false);
         try {
             ObtenerUltimaTransaccionCommand command = new ObtenerUltimaTransaccionCommand(pos,puerto);
-            return command.exceute();
+            DatosRecepcion dRecepcion = command.exceute();
+
+            validarDatosRecepcion(dRecepcion);
+            return dRecepcion;
         }catch (Exception e){
             log.error("Error al obtener la ultima transaccion en el puerto: {}",puerto);
             throw new RuntimeException("ERROR "+e.getMessage());
@@ -93,6 +102,12 @@ public class CajaPosService {
     private void desconectarPuerto(POS pos){
         boolean desconectando = pos.DesconectarPuerto();
         log.warn("Desconectando puerto: {}", desconectando);
+    }
+
+    private void validarDatosRecepcion(DatosRecepcion dRecepciom){
+        if (dRecepciom.getCodigoResultado() == null || dRecepciom.getCodigoResultado().isEmpty()){
+            dRecepciom.setCodigoResultado("99");
+        }
     }
 
 
