@@ -8,47 +8,56 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/com")
+@RequestMapping("/pos")
 @CrossOrigin("*")
 public class CajaPosController {
 
     @Autowired
     private CajaPosService cajaPosService;
 
-    @PostMapping("pruebaDatos/{puertoCom}")
-    public DatosRecepcion recibir(@PathVariable String puertoCom,@RequestBody DatosEnvio datosEnvio) throws Exception {
+    @PostMapping("procesarPago/{puertoCom}")
+    public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) throws Exception {
         try {
-            return cajaPosService.procesarPago(puertoCom,datosEnvio);
+            DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom,datosEnvio);
+            return ResponseEntity.ok(recepcion);
         }catch (Exception e){
-            throw new RuntimeException("No se puedo enviar datos el COM",e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @GetMapping("/listaPuertosCom")
-    public List<String> listaPuertosCom() {
-        return cajaPosService.listaPuerto();
-    }
-
-    @PostMapping("/anular-pago")
-    public ResponseEntity<DatosRecepcion> anularPago(@RequestParam String numReferencia) {
-        DatosRecepcion recepcion = cajaPosService.anularPago(numReferencia);
-        if (recepcion != null) {
-            return ResponseEntity.ok(recepcion);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> listaPuertosCom() {
+        try {
+            Map<String,String> puertos =  cajaPosService.listarPuerto();
+            return ResponseEntity.ok(puertos);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    @GetMapping("/ultima-transaccion")
-    public ResponseEntity<DatosRecepcion> obtenerUltimaTransaccion() {
-        DatosRecepcion recepcion = cajaPosService.obtenerUltima();
-        if (recepcion != null) {
+    @PostMapping("/anular-pago/{puertoCom}")
+    public ResponseEntity<DatosRecepcion> anularPago(@PathVariable String puertoCom ,@RequestParam String numReferencia) {
+        try {
+            DatosRecepcion recepcion = cajaPosService.anularPago(puertoCom, numReferencia);
             return ResponseEntity.ok(recepcion);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/ultima-transaccion/{puertoCom}")
+    public ResponseEntity<DatosRecepcion> obtenerUltimaTransaccion(@PathVariable String puertoCom) {
+        try {
+            DatosRecepcion recepcion = cajaPosService.obtenerUltima(puertoCom);
+            if (recepcion == null || recepcion.getMensajeResultado() == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(recepcion);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
