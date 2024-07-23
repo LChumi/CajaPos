@@ -18,7 +18,8 @@ eureka:
     serviceUrl:
       defaultZone: http://192.168.110.47:8761/eureka/
   instance:
-    hostname: localhost
+    hostname: ${IP_ADDRESS}
+    instance-id: ${spring.application.name}:${INSTANCE_ID}
 
 management:
   endpoints:
