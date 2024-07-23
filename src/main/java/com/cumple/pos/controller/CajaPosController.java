@@ -25,7 +25,7 @@ public class CajaPosController {
     @Autowired
     private CajaPosService cajaPosService;
 
-    @PostMapping("procesarPago/{puertoCom}")
+    @PostMapping("/procesarPago/{puertoCom}")
     public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) throws Exception {
         try {
             DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom,datosEnvio);
