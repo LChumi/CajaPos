@@ -44,6 +44,13 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.7.0</version>
 		</dependency>
+		<!-- Depedecias de Oshi para ver estado compu -->
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-core</artifactId>
+			<version>6.6.1</version>
+		</dependency>
+
 
 		<!-- Dependencias locales -->
 		<dependency>
