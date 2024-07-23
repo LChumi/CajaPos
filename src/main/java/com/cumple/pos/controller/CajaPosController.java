@@ -4,10 +4,17 @@ import com.DF.COM.obj.DatosEnvio;
 import com.DF.COM.obj.DatosRecepcion;
 import com.cumple.pos.service.CajaPosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @RestController
@@ -58,6 +65,20 @@ public class CajaPosController {
             return ResponseEntity.ok(recepcion);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/logs/dowload")
+    public ResponseEntity<Resource> dowloadLogs() {
+        try {
+            Path file = Paths.get("C:\\Pos\\logs\\pos.log");
+            Resource resource = new UrlResource(file.toUri());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachemen; filename=\""+ file.getFileName().toString()+ "\"")
+                    .body(resource);
+        }catch (MalformedURLException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
