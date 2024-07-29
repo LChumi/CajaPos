@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.cumple</groupId>
 	<artifactId>pos</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>Pos</name>
 	<description>App para uso de caja Pos </description>
 	<properties>

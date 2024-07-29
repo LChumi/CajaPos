@@ -1,24 +1,24 @@
 server:
   port: 8080
+
 spring:
   application:
     name: pos-client
 
 logging:
   level:
-    root: info;
+    root: info
     com:
       cumple:
         pos: debug
-  file:
-    name: C:\\Pos\\logs\\pos.log
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://192.168.112.245:8761/eureka/
   instance:
-    hostname: ${IP_ADDRESS:localhost}
+    prefer-ip-address: true
+    ip-address: ${IP_ADDRESS:localhost}
     instance-id: ${spring.application.name}:${INSTANCE_ID:default-instance-id}
 
 management:
@@ -33,7 +33,8 @@ management:
   info:
     env:
       enabled: true
+
 info:
   app:
-    name: Cliente Caja POS
+    name: ${INSTANCE_ID:Cliente Caja POS}
     version: 0.0.1
