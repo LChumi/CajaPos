@@ -11,6 +11,8 @@ logging:
     com:
       cumple:
         pos: debug
+  file:
+    name: C:\\Pos\\pos.log
 
 eureka:
   client:
@@ -18,7 +20,6 @@ eureka:
       defaultZone: http://192.168.112.245:8761/eureka/
   instance:
     prefer-ip-address: true
-    ip-address: ${IP_ADDRESS:localhost}
     instance-id: ${spring.application.name}:${INSTANCE_ID:default-instance-id}
 
 management:
@@ -37,4 +38,4 @@ management:
 info:
   app:
     name: ${INSTANCE_ID:Cliente Caja POS}
-    version: 0.0.1
+    version: 1.0
