@@ -12,7 +12,7 @@ logging:
       cumple:
         pos: debug
   file:
-    name: C:\\Pos\\pos.log
+    name: C:\\Pos\\logs\\pos.log
 
 eureka:
   client:
