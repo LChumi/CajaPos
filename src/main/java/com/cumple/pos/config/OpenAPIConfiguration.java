@@ -21,7 +21,7 @@ public class OpenAPIConfiguration {
     }
 
     @Bean
-    public GroupedOpenApi posApi(){
+    public GroupedOpenApi posApi() {
         return GroupedOpenApi.builder()
                 .group("POS")
                 .pathsToMatch("/pos/**")
@@ -29,7 +29,7 @@ public class OpenAPIConfiguration {
     }
 
     @Bean
-    public GroupedOpenApi clientStatus(){
+    public GroupedOpenApi clientStatus() {
         return GroupedOpenApi.builder()
                 .group("Client-status")
                 .pathsToMatch("/client/**")

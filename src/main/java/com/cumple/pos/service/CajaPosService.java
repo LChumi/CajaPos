@@ -18,97 +18,95 @@ import java.util.Map;
 @Slf4j
 public class CajaPosService {
 
-    public DatosRecepcion procesarPago(String puerto, DatosEnvio datosEnvio) throws Exception{
-        if (!StringValidatorsUtils.validarFormatoPuerto(puerto)){
+    public DatosRecepcion procesarPago(String puerto, DatosEnvio datosEnvio) throws Exception {
+        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
-        if (datosEnvio == null){
+        if (datosEnvio == null) {
             throw new IllegalArgumentException("Datos de envio no valido");
         }
 
         POS pos = new POS(false);
         try {
-            ProcesarPagoCommand command = new ProcesarPagoCommand(pos,datosEnvio, puerto);
+            ProcesarPagoCommand command = new ProcesarPagoCommand(pos, datosEnvio, puerto);
             DatosRecepcion dRecepcion = command.exceute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
-        }catch (Exception e){
-            log.error("Ocurrio un problema al procesar el pago en el puerto: {} , message: {} ",puerto,e.getMessage());
-            throw  new Exception("ERROR "+e.getMessage());
+        } catch (Exception e) {
+            log.error("Ocurrio un problema al procesar el pago en el puerto: {} , message: {} ", puerto, e.getMessage());
+            throw new Exception("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
         }
     }
 
-    public DatosRecepcion anularPago(String puerto, String numeroReferencia) throws Exception{
-        if (!StringValidatorsUtils.validarFormatoPuerto(puerto)){
+    public DatosRecepcion anularPago(String puerto, String numeroReferencia) throws Exception {
+        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
 
         POS pos = new POS(false);
         try {
-            AnularPagoCommand command = new AnularPagoCommand(pos,puerto,numeroReferencia);
+            AnularPagoCommand command = new AnularPagoCommand(pos, puerto, numeroReferencia);
             DatosRecepcion dRecepcion = command.exceute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
-        }catch (Exception e){
-            log.error("Ocurrio un problema al anular el pago en el puert: {}, message: {}",puerto,e.getMessage());
-            throw new RuntimeException("ERROR "+e.getMessage());
-        }finally {
+        } catch (Exception e) {
+            log.error("Ocurrio un problema al anular el pago en el puert: {}, message: {}", puerto, e.getMessage());
+            throw new RuntimeException("ERROR " + e.getMessage());
+        } finally {
             desconectarPuerto(pos);
         }
     }
 
-    public DatosRecepcion obtenerUltima(String puerto) throws Exception{
-        if (!StringValidatorsUtils.validarFormatoPuerto(puerto)){
+    public DatosRecepcion obtenerUltima(String puerto) throws Exception {
+        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
 
         POS pos = new POS(false);
         try {
-            ObtenerUltimaTransaccionCommand command = new ObtenerUltimaTransaccionCommand(pos,puerto);
+            ObtenerUltimaTransaccionCommand command = new ObtenerUltimaTransaccionCommand(pos, puerto);
             DatosRecepcion dRecepcion = command.exceute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
-        }catch (Exception e){
-            log.error("Error al obtener la ultima transaccion en el puerto: {}",puerto);
-            throw new RuntimeException("ERROR "+e.getMessage());
-        }finally {
+        } catch (Exception e) {
+            log.error("Error al obtener la ultima transaccion en el puerto: {}", puerto);
+            throw new RuntimeException("ERROR " + e.getMessage());
+        } finally {
             desconectarPuerto(pos);
         }
     }
 
-    public Map<String, String> listarPuertos(){
+    public Map<String, String> listarPuertos() {
         Map<String, String> response = new HashMap<>();
         SerialPort[] ports = SerialPort.getCommPorts();
 
-        if (ports.length == 0){
+        if (ports.length == 0) {
             log.error("Nose encontraron puertos COM disponibles");
             return null;
         } else {
             log.info("Puertos COM disponibles");
-            for (SerialPort port : ports){
+            for (SerialPort port : ports) {
                 log.info("Descripción del puerto: {}, nombre del puerto COM: {}, nombre del dispositivo: {}",
                         port.getDescriptivePortName(), port.getSystemPortName(), port.getPortDescription());
-                response.put(port.getSystemPortName(),port.getPortDescription());
+                response.put(port.getSystemPortName(), port.getPortDescription());
             }
         }
         return response;
     }
 
-    private void desconectarPuerto(POS pos){
+    private void desconectarPuerto(POS pos) {
         boolean desconectando = pos.DesconectarPuerto();
         log.warn("Desconectando puerto: {}", desconectando);
     }
 
-    private void validarDatosRecepcion(DatosRecepcion dRecepciom){
-        if (dRecepciom.getCodigoResultado() == null || dRecepciom.getCodigoResultado().isEmpty()){
+    private void validarDatosRecepcion(DatosRecepcion dRecepciom) {
+        if (dRecepciom.getCodigoResultado() == null || dRecepciom.getCodigoResultado().isEmpty()) {
             dRecepciom.setCodigoResultado("99");
         }
     }
-
-
 }

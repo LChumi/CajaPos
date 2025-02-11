@@ -12,6 +12,6 @@ public class CustomExceptinHandler {
     @ExceptionHandler(JsonProcessingException.class)
     public ResponseEntity<String> handleJsonProcessingException(JsonProcessingException e) {
         // manejar el error
-        return new ResponseEntity<>("Error al procesar JSON: "+e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Error al procesar JSON: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

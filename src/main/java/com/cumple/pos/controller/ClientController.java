@@ -1,7 +1,9 @@
 package com.cumple.pos.controller;
 
 import com.cumple.pos.models.SystemStatus;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import oshi.software.os.OperatingSystem;
 @RestController
 @RequestMapping("/client")
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ClientController {
 
     private final SystemInfo systemInfo = new SystemInfo();
@@ -27,7 +30,7 @@ public class ClientController {
             GlobalMemory memory = systemInfo.getHardware().getMemory();
             OperatingSystem os = systemInfo.getOperatingSystem();
 
-            double cpuLoad ;
+            double cpuLoad;
             try {
                 cpuLoad = processor.getSystemCpuLoadBetweenTicks(prevTicks) * 100;
                 prevTicks = processor.getSystemCpuLoadTicks();
@@ -35,15 +38,15 @@ public class ClientController {
                 cpuLoad = -1;
             }
 
-            SystemStatus sys= new SystemStatus(
+            SystemStatus sys = new SystemStatus(
                     os.toString(),
                     cpuLoad,
                     memory.getAvailable() / (1024 * 1024),
                     memory.getTotal() / (1024 * 1024)
             );
             return ResponseEntity.ok(sys);
-        }catch (Exception e){
-            log.error("Error en el servicio message: {}",e.getMessage());
+        } catch (Exception e) {
+            log.error("Error en el servicio message: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

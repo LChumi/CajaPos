@@ -22,29 +22,29 @@ public class CajaPosController {
     @PostMapping("/procesarPago/{puertoCom}")
     public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) throws Exception {
         try {
-            DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom,datosEnvio);
+            DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom, datosEnvio);
             return ResponseEntity.ok(recepcion);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @GetMapping("/listaPuertosCom")
-    public ResponseEntity<Map<String,String>> listaPuertosCom() {
+    public ResponseEntity<Map<String, String>> listaPuertosCom() {
         try {
-            Map<String,String> puertos =  cajaPosService.listarPuertos();
+            Map<String, String> puertos = cajaPosService.listarPuertos();
             return ResponseEntity.ok(puertos);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PostMapping("/anular-pago/{puertoCom}")
-    public ResponseEntity<DatosRecepcion> anularPago(@PathVariable String puertoCom ,@RequestParam String numReferencia) {
+    public ResponseEntity<DatosRecepcion> anularPago(@PathVariable String puertoCom, @RequestParam String numReferencia) {
         try {
             DatosRecepcion recepcion = cajaPosService.anularPago(puertoCom, numReferencia);
             return ResponseEntity.ok(recepcion);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -57,7 +57,7 @@ public class CajaPosController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
             return ResponseEntity.ok(recepcion);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

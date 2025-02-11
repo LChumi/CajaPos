@@ -15,11 +15,11 @@ public class AnularPagoCommand implements Command<DatosRecepcion> {
 
     @Override
     public DatosRecepcion exceute() throws Exception {
-        pos.ConfigurarConexionPOS(puerto,9600,8,false);
+        pos.ConfigurarConexionPOS(puerto, 9600, 8, false);
         log.info("Conexion al POS configurada en el puerto: {}", puerto);
 
         DatosRecepcion drecepcion = pos.AnularPago(numeroReferencia);
-        log.info("Anulacion de pago ref: {}",numeroReferencia);
+        log.info("Anulacion de pago ref: {}", numeroReferencia);
 
         return drecepcion;
     }
