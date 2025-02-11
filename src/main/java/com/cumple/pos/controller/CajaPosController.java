@@ -3,6 +3,7 @@ package com.cumple.pos.controller;
 import com.DF.COM.obj.DatosEnvio;
 import com.DF.COM.obj.DatosRecepcion;
 import com.cumple.pos.service.CajaPosService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/pos")
 @CrossOrigin("*")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CajaPosController {
 
-    @Autowired
-    private CajaPosService cajaPosService;
+    private final CajaPosService cajaPosService;
 
     @PostMapping("/procesarPago/{puertoCom}")
     public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) throws Exception {
