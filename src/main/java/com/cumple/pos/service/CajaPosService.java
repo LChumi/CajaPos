@@ -2,6 +2,7 @@ package com.cumple.pos.service;
 
 import com.DF.COM.obj.DatosEnvio;
 import com.DF.COM.obj.DatosRecepcion;
+import com.DF.Enum.ETipoConexion;
 import com.DF.POS.POS;
 import com.cumple.pos.command.AnularPagoCommand;
 import com.cumple.pos.command.ObtenerUltimaTransaccionCommand;
@@ -11,6 +12,7 @@ import com.fazecast.jSerialComm.SerialPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public class CajaPosService {
             throw new IllegalArgumentException("Datos de envio no valido");
         }
 
-        POS pos = new POS(false);
+        POS pos = new POS(false, ETipoConexion.SERIAL);
         try {
             ProcesarPagoCommand command = new ProcesarPagoCommand(pos, datosEnvio, puerto);
             DatosRecepcion dRecepcion = command.exceute();
@@ -46,7 +48,7 @@ public class CajaPosService {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
 
-        POS pos = new POS(false);
+        POS pos = new POS(false, ETipoConexion.SERIAL);
         try {
             AnularPagoCommand command = new AnularPagoCommand(pos, puerto, numeroReferencia);
             DatosRecepcion dRecepcion = command.exceute();
@@ -66,7 +68,7 @@ public class CajaPosService {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
 
-        POS pos = new POS(false);
+        POS pos = new POS(false, ETipoConexion.SERIAL);
         try {
             ObtenerUltimaTransaccionCommand command = new ObtenerUltimaTransaccionCommand(pos, puerto);
             DatosRecepcion dRecepcion = command.exceute();
@@ -99,7 +101,7 @@ public class CajaPosService {
         return response;
     }
 
-    private void desconectarPuerto(POS pos) {
+    private void desconectarPuerto(POS pos) throws IOException {
         boolean desconectando = pos.DesconectarPuerto();
         log.warn("Desconectando puerto: {}", desconectando);
     }

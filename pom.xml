@@ -60,12 +60,17 @@
 		<!-- Dependencias locales -->
 		<dependency>
 			<groupId>com</groupId>
-			<artifactId>jSerialComm</artifactId>
+			<artifactId>jserialcom</artifactId>
 			<version>1</version>
 		</dependency>
 		<dependency>
 			<groupId>com</groupId>
-			<artifactId>jCajaPOSDF</artifactId>
+			<artifactId>gson</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
+			<groupId>com</groupId>
+			<artifactId>jcajapos</artifactId>
 			<version>1</version>
 		</dependency>
 
