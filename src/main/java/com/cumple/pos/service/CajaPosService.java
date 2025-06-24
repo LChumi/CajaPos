@@ -20,6 +20,10 @@ import java.util.Map;
 @Slf4j
 public class CajaPosService {
 
+    public enum ConnectionType {
+        SERIAL, LAN
+    }
+
     public DatosRecepcion procesarPago(String puerto, DatosEnvio datosEnvio) throws Exception {
         if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
@@ -36,7 +40,7 @@ public class CajaPosService {
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
         } catch (Exception e) {
-            log.error("Ocurrio un problema al procesar el pago en el puerto: {} , message: {} ", puerto, e.getMessage());
+            log.error("Ocurrio un problema al procesar el pago en el puerto: {} , message: {} ", puerto, e.getMessage(), e);
             throw new Exception("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
@@ -101,9 +105,18 @@ public class CajaPosService {
         return response;
     }
 
-    private void desconectarPuerto(POS pos) throws IOException {
-        boolean desconectando = pos.DesconectarPuerto();
-        log.warn("Desconectando puerto: {}", desconectando);
+    private void desconectarPuerto(POS pos){
+        try{
+            boolean desconectado = pos.DesconectarPuerto();
+            if (!desconectado) {
+                log.warn("Reintentando desconexion...");
+                desconectado = pos.DesconectarPuerto();
+            }
+            pos.dispose();; //Asegura la liberacion de recursos
+            log.info("Pos desconectado: {}", desconectado);
+        } catch (IOException ex) {
+            log.error("Error al desconectar puerto: {}", ex.getMessage());
+        }
     }
 
     private void validarDatosRecepcion(DatosRecepcion dRecepciom) {
