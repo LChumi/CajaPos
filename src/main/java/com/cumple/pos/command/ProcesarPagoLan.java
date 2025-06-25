@@ -10,19 +10,20 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class ProcesarPagoCommand implements Command<DatosRecepcion> {
+public class ProcesarPagoLan implements Command<DatosRecepcion> {
 
     private final POS pos;
     private final DatosEnvio datosEnvio;
+    private final String ip;
     private final String puerto;
 
     @Override
     public DatosRecepcion exceute() throws Exception {
-        boolean conectado = pos.ConfigurarConexionPOS(puerto, 9600, 8, false);
+        boolean conectado = pos.ConfigurarConexionPOSLAN(ip, puerto, 90000, false);
         if (!conectado) {
             throw new PosNotConnectedException("No se pudo conectar al POS via LAN");
         }
-        log.info("Conexion al POS configurada en el puerto: {}", puerto);
+        log.info("Conectado al POS via LAN EN {}:{}",  ip, puerto);
 
         DatosRecepcion dRecepcion = pos.ProcesarPago(datosEnvio);
         log.info("Estado:{}, transaccion en curso:{}", pos.getStatus(), pos.getTransaccionEnCurso());
