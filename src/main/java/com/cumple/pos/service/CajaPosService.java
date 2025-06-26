@@ -122,9 +122,6 @@ public class CajaPosService {
     }
 
     public DatosRecepcion anularPagoLan(String puerto, String ip, String numeroReferencia) {
-        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
-            throw new IllegalArgumentException("Formato de puerto no valido");
-        }
 
         POS pos = new POS(false, LAN);
         try {
@@ -142,9 +139,6 @@ public class CajaPosService {
     }
 
     public DatosRecepcion obtenerUltimaLan(String puerto, String ip) {
-        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
-            throw new IllegalArgumentException("Formato de puerto no valido");
-        }
 
         POS pos = new POS(false, SERIAL);
         try {
