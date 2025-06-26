@@ -4,7 +4,6 @@ import com.DF.COM.obj.DatosEnvio;
 import com.DF.COM.obj.DatosRecepcion;
 import com.DF.POS.POS;
 import com.cumple.pos.command.*;
-import com.cumple.pos.utils.StringValidatorsUtils;
 import com.fazecast.jSerialComm.SerialPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,14 @@ import java.util.Map;
 
 import static com.DF.Enum.ETipoConexion.LAN;
 import static com.DF.Enum.ETipoConexion.SERIAL;
+import static com.cumple.pos.utils.StringValidatorsUtils.*;
 
 @Service
 @Slf4j
 public class CajaPosService {
 
     public DatosRecepcion procesarPago(String puerto, DatosEnvio datosEnvio) throws Exception {
-        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
+        if (validarFormatoPuertoCom(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
         if (datosEnvio == null) {
@@ -44,7 +44,7 @@ public class CajaPosService {
     }
 
     public DatosRecepcion anularPago(String puerto, String numeroReferencia) {
-        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
+        if (validarFormatoPuertoCom(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
 
@@ -64,7 +64,7 @@ public class CajaPosService {
     }
 
     public DatosRecepcion obtenerUltima(String puerto) {
-        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
+        if (validarFormatoPuertoCom(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
 
@@ -106,6 +106,10 @@ public class CajaPosService {
             throw new IllegalArgumentException("Datos de envio no valido");
         }
 
+        if (!validarFormatoIP(ip) && !validarFormatoPuertoNumerico(puerto)) {
+            throw new IllegalArgumentException("Formato de IP no valido");
+        }
+
         POS pos = new POS(false, LAN);
         try {
             ProcesarPagoLan command = new ProcesarPagoLan(pos, datosEnvio,ip, puerto);
@@ -123,6 +127,10 @@ public class CajaPosService {
 
     public DatosRecepcion anularPagoLan(String puerto, String ip, String numeroReferencia) {
 
+        if (!validarFormatoIP(ip) && !validarFormatoPuertoNumerico(puerto)) {
+            throw new IllegalArgumentException("Formato de IP no valido");
+        }
+
         POS pos = new POS(false, LAN);
         try {
             AnularPagoLan command = new AnularPagoLan(pos, puerto, ip, numeroReferencia);
@@ -139,6 +147,10 @@ public class CajaPosService {
     }
 
     public DatosRecepcion obtenerUltimaLan(String puerto, String ip) {
+
+        if (!validarFormatoIP(ip) && !validarFormatoPuertoNumerico(puerto)) {
+            throw new IllegalArgumentException("Formato de IP no valido");
+        }
 
         POS pos = new POS(false, SERIAL);
         try {
