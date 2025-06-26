@@ -19,21 +19,21 @@ public class CajaPosController {
 
     private final CajaPosService cajaPosService;
 
-    @PostMapping("/procesarPago/{puertoCom}")
-    public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) throws Exception {
-        try {
-            DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom, datosEnvio);
-            return ResponseEntity.ok(recepcion);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
     @GetMapping("/listaPuertosCom")
     public ResponseEntity<Map<String, String>> listaPuertosCom() {
         try {
             Map<String, String> puertos = cajaPosService.listarPuertos();
             return ResponseEntity.ok(puertos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/procesarPago/{puertoCom}")
+    public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) throws Exception {
+        try {
+            DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom, datosEnvio);
+            return ResponseEntity.ok(recepcion);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -53,6 +53,44 @@ public class CajaPosController {
     public ResponseEntity<DatosRecepcion> obtenerUltimaTransaccion(@PathVariable String puertoCom) {
         try {
             DatosRecepcion recepcion = cajaPosService.obtenerUltima(puertoCom);
+            if (recepcion == null || recepcion.getMensajeResultado() == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(recepcion);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/procesar_pago_lan/{puerto}/{ip}")
+    public ResponseEntity<?> recibir(@PathVariable String puerto,
+                                     @PathVariable String ip,
+                                     @RequestBody DatosEnvio datosEnvio){
+        try {
+            DatosRecepcion recepcion = cajaPosService.procesarPagoLan(puerto, ip, datosEnvio);
+            return ResponseEntity.ok(recepcion);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/anular_pago_lan/{puerto}/{ip}")
+    public ResponseEntity<DatosRecepcion> anularPago(@PathVariable String puerto,
+                                                     @PathVariable String ip,
+                                                     @RequestParam String numReferencia) {
+        try {
+            DatosRecepcion recepcion = cajaPosService.anularPagoLan(puerto, ip, numReferencia);
+            return ResponseEntity.ok(recepcion);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/ultima_transaccion_lan/{puerto}/{ip}")
+    public ResponseEntity<DatosRecepcion> obtenerUltimaTransaccion(@PathVariable String puerto,
+                                                                   @PathVariable String ip) {
+        try {
+            DatosRecepcion recepcion = cajaPosService.obtenerUltimaLan(puerto,ip);
             if (recepcion == null || recepcion.getMensajeResultado() == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }

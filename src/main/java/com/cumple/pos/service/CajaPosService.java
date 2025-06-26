@@ -2,7 +2,6 @@ package com.cumple.pos.service;
 
 import com.DF.COM.obj.DatosEnvio;
 import com.DF.COM.obj.DatosRecepcion;
-import com.DF.Enum.ETipoConexion;
 import com.DF.POS.POS;
 import com.cumple.pos.command.*;
 import com.cumple.pos.utils.StringValidatorsUtils;
@@ -44,7 +43,7 @@ public class CajaPosService {
         }
     }
 
-    public DatosRecepcion anularPago(String puerto, String numeroReferencia) throws Exception {
+    public DatosRecepcion anularPago(String puerto, String numeroReferencia) {
         if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
@@ -64,7 +63,7 @@ public class CajaPosService {
         }
     }
 
-    public DatosRecepcion obtenerUltima(String puerto) throws Exception {
+    public DatosRecepcion obtenerUltima(String puerto) {
         if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
@@ -103,9 +102,6 @@ public class CajaPosService {
     }
 
     public DatosRecepcion procesarPagoLan(String puerto, String ip, DatosEnvio datosEnvio) throws Exception {
-        if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
-            throw new IllegalArgumentException("Formato de puerto no valido");
-        }
         if (datosEnvio == null) {
             throw new IllegalArgumentException("Datos de envio no valido");
         }
@@ -118,14 +114,14 @@ public class CajaPosService {
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
         } catch (Exception e) {
-            log.error("Ocurrio un problema al procesar el pago en el puerto: {} , message: {} ", puerto, e.getMessage(), e);
+            log.error("Ocurrio un problema al procesar el pago via LAN en: {}:{}",ip, puerto, e);
             throw new Exception("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
         }
     }
 
-    public DatosRecepcion anularPagoLan(String puerto, String ip, String numeroReferencia) throws Exception {
+    public DatosRecepcion anularPagoLan(String puerto, String ip, String numeroReferencia) {
         if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
@@ -138,14 +134,14 @@ public class CajaPosService {
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
         } catch (Exception e) {
-            log.error("Ocurrio un problema al anular el pago en el puert: {}, message: {}", puerto, e.getMessage());
+            log.error("Ocurrio un problema al anular el pago via LAN en: {}:{}, message: {}",ip, puerto, e.getMessage());
             throw new RuntimeException("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
         }
     }
 
-    public DatosRecepcion obtenerUltimaLan(String puerto, String ip) throws Exception {
+    public DatosRecepcion obtenerUltimaLan(String puerto, String ip) {
         if (StringValidatorsUtils.validarFormatoPuerto(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
@@ -158,7 +154,7 @@ public class CajaPosService {
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
         } catch (Exception e) {
-            log.error("Error al obtener la ultima transaccion en el puerto: {}", puerto);
+            log.error("Error al obtener la ultima transaccion via LAN en: {}:{}",ip, puerto);
             throw new RuntimeException("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);

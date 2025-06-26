@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class ObtenerUltimaTransaccionLan implements Command<DatosRecepcion> {
 
     private final POS pos;

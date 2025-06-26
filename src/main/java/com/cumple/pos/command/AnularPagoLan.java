@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class AnularPagoLan  implements Command<DatosRecepcion> {
 
     private final POS pos;
-    private final String ip;
     private final String puerto;
+    private final String ip;
     private final String numeroReferencia;
 
     @Override
