@@ -18,7 +18,7 @@ public class AnularPagoLan  implements Command<DatosRecepcion> {
 
     @Override
     public DatosRecepcion exceute() throws Exception {
-        boolean conectado = pos.ConfigurarConexionPOS(puerto, 9600, 8, false);
+        boolean conectado = pos.ConfigurarConexionPOSLAN(ip, puerto, 90000, false);
         if (!conectado) {
             throw new PosNotConnectedException("No se pudo conectar al POS via LAN");
         }

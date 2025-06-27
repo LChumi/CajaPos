@@ -1,6 +1,5 @@
 package com.cumple.pos.command;
 
-import com.DF.COM.obj.DatosEnvio;
 import com.DF.COM.obj.DatosRecepcion;
 import com.DF.POS.POS;
 import com.cumple.pos.exception.PosNotConnectedException;
