@@ -30,7 +30,7 @@ public class CajaPosController {
     }
 
     @PostMapping("/procesarPago/{puertoCom}")
-    public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) throws Exception {
+    public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) {
         try {
             DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom, datosEnvio);
             return ResponseEntity.ok(recepcion);
