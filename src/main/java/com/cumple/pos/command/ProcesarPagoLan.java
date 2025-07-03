@@ -25,9 +25,25 @@ public class ProcesarPagoLan implements Command<DatosRecepcion> {
         }
         log.info("Conectado al POS via LAN EN {}:{}",  ip, puerto);
 
+        getTipotransaccion(datosEnvio);
+
         DatosRecepcion dRecepcion = pos.ProcesarPago(datosEnvio);
         log.info("Estado:{}, transaccion en curso:{}", pos.getStatus(), pos.getTransaccionEnCurso());
 
         return dRecepcion;
     }
+
+    private void getTipotransaccion(DatosEnvio datosEnvio){
+        switch (datosEnvio.getTipoCredito()) {
+            case DiferidoCorriente:
+            case DiferidoConIntereses:
+            case DiferidoSinIntereses:
+                datosEnvio.setTipoTransaccion("1");
+                break;
+            default:
+                datosEnvio.setTipoTransaccion("0");
+                break;
+        }
+    }
+
 }
