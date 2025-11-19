@@ -89,6 +89,11 @@
 			<artifactId>jcajapos</artifactId>
 			<version>1</version>
 		</dependency>
+        <dependency>
+            <groupId>com.medianet</groupId>
+            <artifactId>caja-pinpad</artifactId>
+            <version>1</version>
+        </dependency>
 
 		<!-- Dependencia para registrar en eureka -->
 		<dependency>
