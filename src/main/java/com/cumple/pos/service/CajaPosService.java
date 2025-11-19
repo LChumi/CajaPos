@@ -119,7 +119,6 @@ public class CajaPosService {
             return dRecepcion;
         } catch (Exception e) {
             log.error("Ocurrio un problema al procesar el pago via LAN en: {}:{}",ip, puerto, e);
-            desconectarPuerto(pos);
             throw new Exception("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
