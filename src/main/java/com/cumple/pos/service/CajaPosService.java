@@ -31,7 +31,7 @@ public class CajaPosService {
         POS pos = new POS(false, SERIAL);
         try {
             ProcesarPagoCommand command = new ProcesarPagoCommand(pos, datosEnvio, puerto);
-            DatosRecepcion dRecepcion = command.exceute();
+            DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
@@ -51,7 +51,7 @@ public class CajaPosService {
         POS pos = new POS(false, SERIAL);
         try {
             AnularPagoCommand command = new AnularPagoCommand(pos, puerto, numeroReferencia);
-            DatosRecepcion dRecepcion = command.exceute();
+            DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
@@ -71,7 +71,7 @@ public class CajaPosService {
         POS pos = new POS(false, SERIAL);
         try {
             ObtenerUltimaTransaccionCommand command = new ObtenerUltimaTransaccionCommand(pos, puerto);
-            DatosRecepcion dRecepcion = command.exceute();
+            DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
@@ -113,7 +113,7 @@ public class CajaPosService {
         POS pos = new POS(false, LAN);
         try {
             ProcesarPagoLan command = new ProcesarPagoLan(pos, datosEnvio,ip, puerto);
-            DatosRecepcion dRecepcion = command.exceute();
+            DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
@@ -134,7 +134,7 @@ public class CajaPosService {
         POS pos = new POS(false, LAN);
         try {
             AnularPagoLan command = new AnularPagoLan(pos, puerto, ip, numeroReferencia);
-            DatosRecepcion dRecepcion = command.exceute();
+            DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
@@ -155,7 +155,7 @@ public class CajaPosService {
         POS pos = new POS(false, SERIAL);
         try {
             ObtenerUltimaTransaccionLan command= new ObtenerUltimaTransaccionLan(pos,ip, puerto);
-            DatosRecepcion dRecepcion = command.exceute();
+            DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;

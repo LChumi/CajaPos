@@ -3,19 +3,13 @@ package com.cumple.pos.command;
 import com.DF.COM.obj.DatosRecepcion;
 import com.DF.POS.POS;
 import com.cumple.pos.exception.PosNotConnectedException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
-public class AnularPagoCommand implements Command<DatosRecepcion> {
-
-    private final POS pos;
-    private final String puerto;
-    private final String numeroReferencia;
+public record AnularPagoCommand(POS pos, String puerto, String numeroReferencia) implements Command<DatosRecepcion> {
 
     @Override
-    public DatosRecepcion exceute() throws Exception {
+    public DatosRecepcion execute() throws Exception {
         boolean conectado = pos.ConfigurarConexionPOS(puerto, 9600, 8, false);
         if (!conectado) {
             throw new PosNotConnectedException("No se pudo conectar al POS via LAN");
