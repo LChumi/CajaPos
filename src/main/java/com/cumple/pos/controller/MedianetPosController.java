@@ -1,0 +1,31 @@
+package com.cumple.pos.controller;
+
+import com.cumple.pos.models.DatosEnvioPP;
+import com.cumple.pos.service.MedianetService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/pos")
+@CrossOrigin("*")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+public class MedianetPosController {
+
+    private final MedianetService service;
+
+    @PostMapping("/medianet/procesarPago/{puerto}/{ip}")
+    public ResponseEntity<?> recibir(@PathVariable int puerto,
+                                     @PathVariable String ip,
+                                     @RequestBody DatosEnvioPP datosEnvio){
+        try {
+            service.ProcesarPago(datosEnvio, ip, puerto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+}
