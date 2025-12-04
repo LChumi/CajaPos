@@ -28,4 +28,5 @@ public class PagoResponse {
     private String aid;
     private String tvr;
     private String tsi;
+    private boolean aprobada;
 }
