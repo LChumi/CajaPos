@@ -1,6 +1,7 @@
 package com.cumple.pos.controller;
 
 import com.cumple.pos.models.DatosEnvioPP;
+import com.cumple.pos.models.PagoResponse;
 import com.cumple.pos.service.MedianetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +20,12 @@ public class MedianetPosController {
     private final MedianetService service;
 
     @PostMapping("/medianet/procesarPago/{puerto}/{ip}")
-    public ResponseEntity<?> recibir(@PathVariable int puerto,
-                                     @PathVariable String ip,
-                                     @RequestBody DatosEnvioPP datosEnvio){
+    public ResponseEntity<PagoResponse> recibir(@PathVariable int puerto,
+                                                @PathVariable String ip,
+                                                @RequestBody DatosEnvioPP datosEnvio){
         try {
-            service.ProcesarPago(datosEnvio, ip, puerto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            PagoResponse p = service.ProcesarPago(datosEnvio, ip, puerto);
+            return ResponseEntity.ok(p);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

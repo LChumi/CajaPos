@@ -19,6 +19,14 @@ public class PagoResponse {
     private String fechaVencimiento;
     private String codigoRed;
     private String tarjetaTruncada;
+    private String interes;
+    private String cobrandSha;
+    private String chipAppName;
+    private String tipoCuenta;
+    private String publicidad;
+    private String cupo;
+    private String montoMaxidolar;
+    private String numTarjetaPayClub;
     private String bancoAdquirente;
     private String bancoEmisor;
     private String grupoTarjeta;
@@ -28,5 +36,6 @@ public class PagoResponse {
     private String aid;
     private String tvr;
     private String tsi;
+    private String hash;
     private boolean aprobada;
 }
