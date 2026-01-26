@@ -24,10 +24,11 @@ public class MedianetPosController {
                                                 @PathVariable String ip,
                                                 @RequestBody DatosEnvioPP datosEnvio){
         try {
+            //service.enviarLT(datosEnvio.getTotal(), ip, puerto);
             PagoResponse p = service.ProcesarPago(datosEnvio, ip, puerto);
             return ResponseEntity.ok(p);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("ERROR: {}",e.getMessage() ,e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

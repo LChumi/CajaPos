@@ -3,6 +3,10 @@ package com.cumple.pos.utils.helper;
 import cajapinpad.CifradoTramas;
 import cajapinpad.ProccessData;
 import com.cumple.pos.models.DatosEnvioPP;
+import com.cumple.pos.utils.enums.CampoPP;
+
+import static com.cumple.pos.utils.DateUtils.obtenerFechaActual;
+import static com.cumple.pos.utils.DateUtils.obtenerHoraActual;
 
 public class CajaPosHelper {
 
@@ -24,12 +28,14 @@ public class CajaPosHelper {
     public byte[] buildBytes(double monto) {
         String mont = normalizarMonto(monto);
 
-        String[] campos = new String[3];
+        String[] campos = new String[5];
         campos[0] = "LT"; //identificador
-        campos[1] = mont;
+        campos[1] = "11001";
+        campos[2] = "06012";
+        campos[3] = mont;
 
         // hash rellenado a la derecha
-        campos[2] = processData.padright(cifrado.getHash(), 32 , ' ');
+        campos[4] = processData.padright(cifrado.getHash(), 32 , ' ');
 
         return processData.getFinalData(campos);
     }
@@ -43,54 +49,54 @@ public class CajaPosHelper {
         String total = normalizarMonto(dEnvio.getTotal());
 
         // 11 campos + hash = 12
-        String[] campos = new String[17];
-
-        getCampos(dEnvio, subtotal, iva, subtotal0, total, campos);
-        campos[10] = dEnvio.getHora();
-        campos[11] = dEnvio.getFecha();
-        campos[12] = dEnvio.getPVenta();
-        campos[13] = dEnvio.getMid();
-        campos[14] = dEnvio.getTid();
-        campos[15] = dEnvio.getCid();
-        campos[16] = processData.padright(cifrado.getHash(), 32 , ' '); // hash
-
+        String[] campos = new String[15];
+        String secuencia = "11013";
+        getCampos(dEnvio, secuencia, subtotal, iva, subtotal0, total, campos);
+        //campos[15] = processData.padright(cifrado.getHash(), 32 , ' '); // hash
         return processData.getFinalData(campos);
     }
 
+    ///  Campos para anulaciones
     public byte[] buildAnulacionBytes(DatosEnvioPP dEnvio){
         String subtotal = normalizarMonto(dEnvio.getSubtotal());
         String iva =  normalizarMonto(dEnvio.getIva());
         String subtotal0 = normalizarMonto(dEnvio.getSubtotal0());
         String total = normalizarMonto(dEnvio.getTotal());
 
-        String[] campos = new String[20];
+        String[] campos = new String[19];
+        String secuencia = "11017";
 
-        getCampos(dEnvio, subtotal, iva, subtotal0, total, campos);
-        campos[10] = dEnvio.getReferencia();
-        campos[11] = dEnvio.getLote();
-        campos[12] = dEnvio.getHora();
-        campos[13] = dEnvio.getFecha();
-        campos[14] = dEnvio.getNumeroAutorizacion();
-        campos[15] = dEnvio.getPVenta();
-        campos[16] = dEnvio.getMid();
-        campos[17] = dEnvio.getTid();
-        campos[18] = dEnvio.getCid();
-        campos[19] = processData.padright(cifrado.getHash(), 32 , ' '); // hash
+        getCampos(dEnvio, subtotal, secuencia, iva, subtotal0, total, campos);
+        campos[15] = CampoPP.REFERENCIA.build(dEnvio.getReferencia());
+        campos[16] = CampoPP.LOTE.build(dEnvio.getLote());
+        campos[17] = CampoPP.NUMERO_AUTORIZACION.build(dEnvio.getNumeroAutorizacion());
+        campos[18] = processData.padright(cifrado.getHash(), 32 , ' '); // hash
 
         return processData.getFinalData(campos);
     }
 
-    private void getCampos(DatosEnvioPP dEnvio, String subtotal, String iva, String subtotal0, String total, String[] campos) {
+    private void getCampos(DatosEnvioPP dEnvio, String secuencia, String subtotal, String iva, String subtotal0, String total, String[] campos) {
         campos[0] = "PP"; //Identificador del mensaje
-        campos[1] = dEnvio.getTipoTransaccion(); //03 Anulaciones
-        campos[2] = dEnvio.getCodigoDiferido(); //00 Compra Corriente resto tipos de diferido
-        campos[3] = dEnvio.getPlazo(); // 00 plazo
-        campos[4] = "00"; // 00 mez de gracia
-        campos[5] = total; // Monto total de la Transaccion
-        campos[6] = subtotal; //Monto base que graba el IVA
-        campos[7] = subtotal0; //Monto base que no graba el IVA
-        campos[8] = iva; // Impuesto de la transaccion
-        campos[9] = subtotal0;
+        campos[1] = secuencia;
+        campos[2] = CampoPP.TIPO_TRANSACCION.build(dEnvio.getTipoTransaccion()); //03 Anulaciones
+        campos[3] = CampoPP.CODIGO_DIFERIDO.build(dEnvio.getCodigoDiferido()); //00 Compra Corriente resto tipos de diferido
+        campos[4] = CampoPP.PLAZO.build(dEnvio.getPlazo()); // 00 plazo
+        campos[5] = CampoPP.MONTO_TOTAL.build(total); // Monto total de la Transaccion
+        campos[6] = CampoPP.SUBTOTAL_IVA.build(subtotal); //Monto base que graba el IVA
+        campos[7] = CampoPP.SUBTOTAL0.build(subtotal0); //Monto base que no graba el IVA
+        campos[8] = CampoPP.IVA.build(iva); // Impuesto de la transaccion
+        campos[9] = CampoPP.HORA.build(obtenerHoraActual());
+        campos[10] = CampoPP.FECHA.build(obtenerFechaActual());
+        campos[11] = CampoPP.PUNTO_VENTA.build(dEnvio.getPVenta());
+        campos[12] = CampoPP.MID.build(dEnvio.getMid());
+        campos[13] = CampoPP.TID.build(dEnvio.getTid());
+        campos[14] = CampoPP.CID.build(dEnvio.getCid());
     }
+
+
+    public boolean validateHash(String hash){
+        return cifrado.validateHash(hash);
+    }
+
 
 }

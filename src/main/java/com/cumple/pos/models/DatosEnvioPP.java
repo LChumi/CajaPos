@@ -11,8 +11,6 @@ public class DatosEnvioPP {
     String tipoTransaccion;
     String codigoDiferido;
     String plazo;
-    String hora;
-    String fecha;
     String mid;
     String tid;
     String cid;

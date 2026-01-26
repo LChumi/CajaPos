@@ -28,25 +28,28 @@ public class MedianetService {
     public void enviarLT(double monto, String ipPos, int puertoPos){
         byte[] datasend = helper.buildBytes(monto);
 
-        log.info("Enviando LT: {}" , processData.byte2hex(datasend));
+        log.info("Enviando LT: {}" , processData.hex2AsciiStr(processData.byte2hex(datasend)));
 
         getConexion(ipPos, puertoPos, datasend);
     }
 
     public PagoResponse ProcesarPago(DatosEnvioPP dEnvio, String ip, int puerto){
         byte[] dataSend = helper.buildCompraBytes(dEnvio);
-
-        log.info("Enviando Pago: {}" , processData.hex2AsciiStr(processData.byte2hex(dataSend)));
-
         return getConexion(ip, puerto, dataSend);
     }
 
     private PagoResponse getConexion(String ipPos, int puertoPos, byte[] datasend) {
+        log.info("Enviando Pago: {}" , processData.hex2AsciiStr(processData.byte2hex(datasend)));
         conexion.sendData(ipPos, puertoPos, datasend, 30000);
 
         byte[] respuestaBytes= conexion.getDataRecived();
 
         String ascii = processData.hex2AsciiStr(processData.byte2hex(respuestaBytes));
+        System.out.println("Respuesta: " + ascii);
+
+        String hashReceived = ascii.substring(ascii.length() -32, ascii.length());
+        System.out.println("HASH RECEIVED: " + hashReceived);
+        System.out.println("STATUS HASH RECEIVED: " + helper.validateHash(hashReceived));
 
         PagoResponse r2 = parse(ascii);
         System.out.println(r2);
