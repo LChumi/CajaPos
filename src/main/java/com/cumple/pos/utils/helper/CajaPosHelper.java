@@ -50,9 +50,9 @@ public class CajaPosHelper {
 
         // 11 campos + hash = 12
         String[] campos = new String[15];
-        String secuencia = "11013";
+        String secuencia = "11012";
         getCampos(dEnvio, secuencia, subtotal, iva, subtotal0, total, campos);
-        //campos[15] = processData.padright(cifrado.getHash(), 32 , ' '); // hash
+        campos[14] = processData.padright(cifrado.getHash(), 32 , ' '); // hash
         return processData.getFinalData(campos);
     }
 
@@ -80,23 +80,20 @@ public class CajaPosHelper {
         campos[1] = secuencia;
         campos[2] = CampoPP.TIPO_TRANSACCION.build(dEnvio.getTipoTransaccion()); //03 Anulaciones
         campos[3] = CampoPP.CODIGO_DIFERIDO.build(dEnvio.getCodigoDiferido()); //00 Compra Corriente resto tipos de diferido
-        campos[4] = CampoPP.PLAZO.build(dEnvio.getPlazo()); // 00 plazo
-        campos[5] = CampoPP.MONTO_TOTAL.build(total); // Monto total de la Transaccion
-        campos[6] = CampoPP.SUBTOTAL_IVA.build(subtotal); //Monto base que graba el IVA
-        campos[7] = CampoPP.SUBTOTAL0.build(subtotal0); //Monto base que no graba el IVA
-        campos[8] = CampoPP.IVA.build(iva); // Impuesto de la transaccion
-        campos[9] = CampoPP.HORA.build(obtenerHoraActual());
-        campos[10] = CampoPP.FECHA.build(obtenerFechaActual());
-        campos[11] = CampoPP.PUNTO_VENTA.build(dEnvio.getPVenta());
-        campos[12] = CampoPP.MID.build(dEnvio.getMid());
-        campos[13] = CampoPP.TID.build(dEnvio.getTid());
-        campos[14] = CampoPP.CID.build(dEnvio.getCid());
+        //campos[4] = CampoPP.PLAZO.build(dEnvio.getPlazo()); // 00 plazo
+        campos[4] = CampoPP.MONTO_TOTAL.build(total); // Monto total de la Transaccion
+        campos[5] = CampoPP.SUBTOTAL_IVA.build(subtotal); //Monto base que graba el IVA
+        campos[6] = CampoPP.SUBTOTAL0.build(subtotal0); //Monto base que no graba el IVA
+        campos[7] = CampoPP.IVA.build(iva); // Impuesto de la transaccion
+        campos[8] = CampoPP.HORA.build(obtenerHoraActual());
+        campos[9] = CampoPP.FECHA.build(obtenerFechaActual());
+        campos[10] = CampoPP.PUNTO_VENTA.build(dEnvio.getPVenta());
+        campos[11] = CampoPP.MID.build(dEnvio.getMid());
+        campos[12] = CampoPP.TID.build(dEnvio.getTid());
+        campos[13] = CampoPP.CID.build(dEnvio.getCid());
     }
-
 
     public boolean validateHash(String hash){
         return cifrado.validateHash(hash);
     }
-
-
 }
