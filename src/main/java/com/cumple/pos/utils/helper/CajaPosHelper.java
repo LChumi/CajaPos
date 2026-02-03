@@ -93,7 +93,5 @@ public class CajaPosHelper {
         campos[13] = CampoPP.CID.build(dEnvio.getCid());
     }
 
-    public boolean validateHash(String hash){
-        return cifrado.validateHash(hash);
-    }
+
 }
