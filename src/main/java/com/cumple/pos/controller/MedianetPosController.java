@@ -19,7 +19,7 @@ public class MedianetPosController {
 
     private final MedianetService service;
 
-    @PostMapping("/medianet/procesarPago/{puerto}/{ip}")
+    @PostMapping("/medianet/transaccion/{puerto}/{ip}")
     public ResponseEntity<PagoResponse> recibir(@PathVariable int puerto,
                                                 @PathVariable String ip,
                                                 @RequestBody DatosEnvioPP datosEnvio){
