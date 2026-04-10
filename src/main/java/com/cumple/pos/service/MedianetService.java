@@ -30,7 +30,7 @@ public class MedianetService {
         this.cifrado = new CifradoTramas();
     }
 
-    public PagoResponse ProcesarPago(DatosEnvioPP dEnvio, String ip, int puerto) {
+    public PagoResponse procesarTransaccion(DatosEnvioPP dEnvio, String ip, int puerto) {
         byte[] dataSend = build(dEnvio);
         return getConexion(ip, puerto, dataSend);
     }

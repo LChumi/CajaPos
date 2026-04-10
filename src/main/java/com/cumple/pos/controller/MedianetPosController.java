@@ -25,7 +25,7 @@ public class MedianetPosController {
                                                 @RequestBody DatosEnvioPP datosEnvio){
         try {
             //service.enviarLT(datosEnvio.getTotal(), ip, puerto);
-            PagoResponse p = service.ProcesarPago(datosEnvio, ip, puerto);
+            PagoResponse p = service.procesarTransaccion(datosEnvio, ip, puerto);
             return ResponseEntity.ok(p);
         } catch (Exception e) {
             log.error("ERROR: {}",e.getMessage() ,e);
