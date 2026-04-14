@@ -112,13 +112,13 @@ public class CajaPosService {
 
         POS pos = new POS(false, LAN);
         try {
-            ProcesarPagoLan command = new ProcesarPagoLan(pos, datosEnvio,ip, puerto);
+            ProcesarPagoLan command = new ProcesarPagoLan(pos, datosEnvio, ip, puerto);
             DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
         } catch (Exception e) {
-            log.error("Ocurrio un problema al procesar el pago via LAN en: {}:{}",ip, puerto, e);
+            log.error("Ocurrio un problema al procesar el pago via LAN en: {}:{}", ip, puerto, e);
             throw new Exception("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
@@ -139,7 +139,7 @@ public class CajaPosService {
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
         } catch (Exception e) {
-            log.error("Ocurrio un problema al anular el pago via LAN en: {}:{}, message: {}",ip, puerto, e.getMessage());
+            log.error("Ocurrio un problema al anular el pago via LAN en: {}:{}, message: {}", ip, puerto, e.getMessage());
             throw new RuntimeException("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
@@ -154,27 +154,28 @@ public class CajaPosService {
 
         POS pos = new POS(false, SERIAL);
         try {
-            ObtenerUltimaTransaccionLan command= new ObtenerUltimaTransaccionLan(pos,ip, puerto);
+            ObtenerUltimaTransaccionLan command = new ObtenerUltimaTransaccionLan(pos, ip, puerto);
             DatosRecepcion dRecepcion = command.execute();
 
             validarDatosRecepcion(dRecepcion);
             return dRecepcion;
         } catch (Exception e) {
-            log.error("Error al obtener la ultima transaccion via LAN en: {}:{}",ip, puerto);
+            log.error("Error al obtener la ultima transaccion via LAN en: {}:{}", ip, puerto);
             throw new RuntimeException("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
         }
     }
 
-    private void desconectarPuerto(POS pos){
-        try{
+    private void desconectarPuerto(POS pos) {
+        try {
             boolean desconectado = pos.DesconectarPuerto();
             if (!desconectado) {
                 log.warn("Reintentando desconexion...");
                 desconectado = pos.DesconectarPuerto();
             }
-            pos.dispose();; //Asegura la liberacion de recursos
+            pos.dispose();
+            ; //Asegura la liberacion de recursos
             log.info("Pos desconectado: {}", desconectado);
         } catch (IOException ex) {
             log.error("Error al desconectar puerto: {}", ex.getMessage());

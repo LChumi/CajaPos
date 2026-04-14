@@ -22,13 +22,12 @@ public class MedianetPosController {
     @PostMapping("/medianet/transaccion/{puerto}/{ip}")
     public ResponseEntity<PagoResponse> recibir(@PathVariable int puerto,
                                                 @PathVariable String ip,
-                                                @RequestBody DatosEnvioPP datosEnvio){
+                                                @RequestBody DatosEnvioPP datosEnvio) {
         try {
-            //service.enviarLT(datosEnvio.getTotal(), ip, puerto);
             PagoResponse p = service.procesarTransaccion(datosEnvio, ip, puerto);
             return ResponseEntity.ok(p);
         } catch (Exception e) {
-            log.error("ERROR: {}",e.getMessage() ,e);
+            log.error("ERROR: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

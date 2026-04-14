@@ -65,7 +65,7 @@ public class CajaPosController {
     @PostMapping("/procesar_pago_lan/{puerto}/{ip}")
     public ResponseEntity<?> recibir(@PathVariable String puerto,
                                      @PathVariable String ip,
-                                     @RequestBody DatosEnvio datosEnvio){
+                                     @RequestBody DatosEnvio datosEnvio) {
         try {
             DatosRecepcion recepcion = cajaPosService.procesarPagoLan(puerto, ip, datosEnvio);
             return ResponseEntity.ok(recepcion);
@@ -90,7 +90,7 @@ public class CajaPosController {
     public ResponseEntity<DatosRecepcion> obtenerUltimaTransaccion(@PathVariable String puerto,
                                                                    @PathVariable String ip) {
         try {
-            DatosRecepcion recepcion = cajaPosService.obtenerUltimaLan(puerto,ip);
+            DatosRecepcion recepcion = cajaPosService.obtenerUltimaLan(puerto, ip);
             if (recepcion == null || recepcion.getMensajeResultado() == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }

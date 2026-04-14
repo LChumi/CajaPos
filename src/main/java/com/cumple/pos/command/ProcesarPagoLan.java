@@ -23,11 +23,11 @@ public record ProcesarPagoLan(POS pos, DatosEnvio datosEnvio, String ip,
         DatosRecepcion dRecepcion;
         try {
             dRecepcion = pos.ProcesarPago(datosEnvio);
-        } catch (NullPointerException npe){
+        } catch (NullPointerException npe) {
             log.warn("El POS devolvió un campo P57 nulo, se ignora publicidad/intereses obteniendo la ultima transaccion");
             log.debug("Detalle del error POS", npe);
             DatosRecepcion ultima = pos.ObtenerUltima();
-            dRecepcion = validateUltima(ultima,  datosEnvio);
+            dRecepcion = validateUltima(ultima, datosEnvio);
         }
         log.info("Estado:{}, transaccion en curso:{}", pos.getStatus(), pos.getTransaccionEnCurso());
 
@@ -47,7 +47,7 @@ public record ProcesarPagoLan(POS pos, DatosEnvio datosEnvio, String ip,
         }
     }
 
-    private DatosRecepcion validateUltima(DatosRecepcion dRecepcion, DatosEnvio dEnvio){
+    private DatosRecepcion validateUltima(DatosRecepcion dRecepcion, DatosEnvio dEnvio) {
         if (dRecepcion == null) {
             return null;
         }
