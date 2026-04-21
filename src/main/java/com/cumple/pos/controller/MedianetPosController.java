@@ -6,7 +6,6 @@ import com.cumple.pos.service.MedianetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +22,8 @@ public class MedianetPosController {
     public ResponseEntity<PagoResponse> recibir(@PathVariable int puerto,
                                                 @PathVariable String ip,
                                                 @RequestBody DatosEnvioPP datosEnvio) {
-        try {
             PagoResponse p = service.procesarTransaccion(datosEnvio, ip, puerto);
             return ResponseEntity.ok(p);
-        } catch (Exception e) {
-            log.error("ERROR: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
     }
 
 }

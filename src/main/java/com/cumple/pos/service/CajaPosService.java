@@ -20,7 +20,7 @@ import static com.cumple.pos.utils.StringValidatorsUtils.*;
 @Slf4j
 public class CajaPosService {
 
-    public DatosRecepcion procesarPago(String puerto, DatosEnvio datosEnvio) throws Exception {
+    public DatosRecepcion procesarPago(String puerto, DatosEnvio datosEnvio) {
         if (validarFormatoPuertoCom(puerto)) {
             throw new IllegalArgumentException("Formato de puerto no valido");
         }
@@ -37,7 +37,7 @@ public class CajaPosService {
             return dRecepcion;
         } catch (Exception e) {
             log.error("Ocurrio un problema al procesar el pago en el puerto: {} , message: {} ", puerto, e.getMessage(), e);
-            throw new Exception("ERROR " + e.getMessage());
+            throw new RuntimeException("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
         }
@@ -101,7 +101,7 @@ public class CajaPosService {
         return response;
     }
 
-    public DatosRecepcion procesarPagoLan(String puerto, String ip, DatosEnvio datosEnvio) throws Exception {
+    public DatosRecepcion procesarPagoLan(String puerto, String ip, DatosEnvio datosEnvio) {
         if (datosEnvio == null) {
             throw new IllegalArgumentException("Datos de envio no valido");
         }
@@ -119,7 +119,7 @@ public class CajaPosService {
             return dRecepcion;
         } catch (Exception e) {
             log.error("Ocurrio un problema al procesar el pago via LAN en: {}:{}", ip, puerto, e);
-            throw new Exception("ERROR " + e.getMessage());
+            throw new RuntimeException("ERROR " + e.getMessage());
         } finally {
             desconectarPuerto(pos);
         }
