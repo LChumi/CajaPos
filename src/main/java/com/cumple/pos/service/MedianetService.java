@@ -35,6 +35,11 @@ public class MedianetService {
         return getConexion(ip, puerto, dataSend);
     }
 
+    public PagoResponse cierreTransaccion(DatosEnvioPP dEnvio, String ip, int puerto) {
+        byte[] dataSend = buildControl(dEnvio);
+        return getConexion(ip, puerto, dataSend);
+    }
+
     private PagoResponse getConexion(String ipPos, int puertoPos, byte[] datasend) {
         log.info("Enviando Pago: {}", processData.hex2AsciiStr(processData.byte2hex(datasend)));
         conexion.sendData(ipPos, puertoPos, datasend, 30000);
@@ -110,6 +115,25 @@ public class MedianetService {
         campos.set(1, secuencia);
 
         // Hash siempre al final
+        campos.add(processData.padright(cifrado.getHash(), 32, ' '));
+
+        return processData.getFinalData(campos.toArray(new String[0]));
+    }
+
+    private byte[] buildControl(DatosEnvioPP d) {
+
+        List<String> campos = new ArrayList<>();
+
+        // CABECERA
+        campos.add("PC");                 // Cantidad paquetes
+        campos.add("11");                 // Cantidad campos (ajustar luego si cambia)
+        campos.add("003");
+
+        // CUERPO (solo lo que pide el flujo nuevo)
+        campos.add(CampoPP.MID.build(d.getMid()));               // 19
+        campos.add(CampoPP.TID.build(d.getTid()));               // 20
+        campos.add(CampoPP.CID.build(d.getCid()));               // 21
+
         campos.add(processData.padright(cifrado.getHash(), 32, ' '));
 
         return processData.getFinalData(campos.toArray(new String[0]));
