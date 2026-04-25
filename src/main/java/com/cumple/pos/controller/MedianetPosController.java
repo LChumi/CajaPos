@@ -22,14 +22,14 @@ public class MedianetPosController {
     public ResponseEntity<PagoResponse> recibir(@PathVariable int puerto,
                                                 @PathVariable String ip,
                                                 @RequestBody DatosEnvioPP datosEnvio) {
-            PagoResponse p = service.procesarTransaccion(datosEnvio, ip, puerto);
-            return ResponseEntity.ok(p);
+        PagoResponse p = service.procesarTransaccion(datosEnvio, ip, puerto);
+        return ResponseEntity.ok(p);
     }
 
     @PostMapping("/medianet/cierre/{puerto}/{ip}")
     public ResponseEntity<PagoResponse> cierre(@PathVariable int puerto,
-                                                @PathVariable String ip,
-                                                @RequestBody DatosEnvioPP datosEnvio) {
+                                               @PathVariable String ip,
+                                               @RequestBody DatosEnvioPP datosEnvio) {
         PagoResponse p = service.cierreTransaccion(datosEnvio, ip, puerto);
         return ResponseEntity.ok(p);
     }
