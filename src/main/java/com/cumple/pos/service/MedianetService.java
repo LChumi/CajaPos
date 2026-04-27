@@ -125,8 +125,8 @@ public class MedianetService {
         List<String> campos = new ArrayList<>();
 
         // CABECERA
-        campos.add("PC");                 // Cantidad paquetes
-        campos.add("11");                 // Cantidad campos (ajustar luego si cambia)
+        campos.add("PC");
+        campos.add("11");
         campos.add("003");
 
         // CUERPO (solo lo que pide el flujo nuevo)
