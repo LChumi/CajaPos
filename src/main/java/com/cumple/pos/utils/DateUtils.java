@@ -11,7 +11,8 @@ public class DateUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         return hoy.format(formatter);
     }
-    public  static String obtenerHoraActual() {
+
+    public static String obtenerHoraActual() {
         LocalDateTime ahora = LocalDateTime.now();
         return ahora.format(DateTimeFormatter.ofPattern("HHmmss"));
     }

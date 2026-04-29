@@ -21,29 +21,29 @@ public class CajaPosController {
 
     @GetMapping("/listaPuertosCom")
     public ResponseEntity<Map<String, String>> listaPuertosCom() {
-            Map<String, String> puertos = cajaPosService.listarPuertos();
-            return ResponseEntity.ok(puertos);
+        Map<String, String> puertos = cajaPosService.listarPuertos();
+        return ResponseEntity.ok(puertos);
     }
 
     @PostMapping("/procesarPago/{puertoCom}")
     public ResponseEntity<?> recibir(@PathVariable String puertoCom, @RequestBody DatosEnvio datosEnvio) {
-            DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom, datosEnvio);
-            return ResponseEntity.ok(recepcion);
+        DatosRecepcion recepcion = cajaPosService.procesarPago(puertoCom, datosEnvio);
+        return ResponseEntity.ok(recepcion);
     }
 
     @PostMapping("/anular-pago/{puertoCom}")
     public ResponseEntity<DatosRecepcion> anularPago(@PathVariable String puertoCom, @RequestParam String numReferencia) {
-            DatosRecepcion recepcion = cajaPosService.anularPago(puertoCom, numReferencia);
-            return ResponseEntity.ok(recepcion);
+        DatosRecepcion recepcion = cajaPosService.anularPago(puertoCom, numReferencia);
+        return ResponseEntity.ok(recepcion);
     }
 
     @GetMapping("/ultima-transaccion/{puertoCom}")
     public ResponseEntity<DatosRecepcion> obtenerUltimaTransaccion(@PathVariable String puertoCom) {
-            DatosRecepcion recepcion = cajaPosService.obtenerUltima(puertoCom);
-            if (recepcion == null || recepcion.getMensajeResultado() == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-            return ResponseEntity.ok(recepcion);
+        DatosRecepcion recepcion = cajaPosService.obtenerUltima(puertoCom);
+        if (recepcion == null || recepcion.getMensajeResultado() == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(recepcion);
     }
 
     @PostMapping("/procesar_pago_lan/{puerto}/{ip}")
@@ -51,26 +51,26 @@ public class CajaPosController {
                                      @PathVariable String ip,
                                      @RequestBody DatosEnvio datosEnvio) {
 
-            DatosRecepcion recepcion = cajaPosService.procesarPagoLan(puerto, ip, datosEnvio);
-            return ResponseEntity.ok(recepcion);
+        DatosRecepcion recepcion = cajaPosService.procesarPagoLan(puerto, ip, datosEnvio);
+        return ResponseEntity.ok(recepcion);
     }
 
     @PostMapping("/anular_pago_lan/{puerto}/{ip}")
     public ResponseEntity<DatosRecepcion> anularPago(@PathVariable String puerto,
                                                      @PathVariable String ip,
                                                      @RequestParam String numReferencia) {
-            DatosRecepcion recepcion = cajaPosService.anularPagoLan(puerto, ip, numReferencia);
-            return ResponseEntity.ok(recepcion);
+        DatosRecepcion recepcion = cajaPosService.anularPagoLan(puerto, ip, numReferencia);
+        return ResponseEntity.ok(recepcion);
     }
 
     @GetMapping("/ultima_transaccion_lan/{puerto}/{ip}")
     public ResponseEntity<DatosRecepcion> obtenerUltimaTransaccion(@PathVariable String puerto,
                                                                    @PathVariable String ip) {
-            DatosRecepcion recepcion = cajaPosService.obtenerUltimaLan(puerto, ip);
-            if (recepcion == null || recepcion.getMensajeResultado() == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-            return ResponseEntity.ok(recepcion);
+        DatosRecepcion recepcion = cajaPosService.obtenerUltimaLan(puerto, ip);
+        if (recepcion == null || recepcion.getMensajeResultado() == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(recepcion);
     }
 
 }
