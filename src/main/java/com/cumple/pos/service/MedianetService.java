@@ -95,7 +95,11 @@ public class MedianetService {
         campos.add(CampoPP.IVA.build(normalizarMonto(d.getIva())));
 
         if (esReverso) {
-            campos.add(CampoPP.HORA.build(d.getHora()));
+            if (d.getHora() != null && !d.getHora().trim().isEmpty()) {
+                campos.add(CampoPP.HORA.build(d.getHora()));
+            } else {
+                throw new IllegalArgumentException("Hora es necesaria");
+            }
         } else {
             campos.add(CampoPP.HORA.build(obtenerHoraActual()));
         }
