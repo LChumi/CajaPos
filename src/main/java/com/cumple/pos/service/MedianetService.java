@@ -71,6 +71,8 @@ public class MedianetService {
 
         boolean esAnulacion = "03".equals(tipo);
 
+        boolean esReverso = "04".equals(tipo);
+
         // 0 Identificador
         campos.add("PP");
 
@@ -92,8 +94,12 @@ public class MedianetService {
         campos.add(CampoPP.SUBTOTAL0.build(normalizarMonto(d.getSubtotal0())));
         campos.add(CampoPP.IVA.build(normalizarMonto(d.getIva())));
 
+        if (esReverso) {
+            campos.add(CampoPP.HORA.build(d.getHora()));
+        } else {
+            campos.add(CampoPP.HORA.build(obtenerHoraActual()));
+        }
         // Hora / Fecha
-        campos.add(CampoPP.HORA.build(obtenerHoraActual()));
         campos.add(CampoPP.FECHA.build(obtenerFechaActual()));
 
         // Identificadores
