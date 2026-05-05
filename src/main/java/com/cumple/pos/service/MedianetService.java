@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.cumple.pos.utils.DateUtils.obtenerFechaActual;
-import static com.cumple.pos.utils.DateUtils.obtenerHoraActual;
 import static com.cumple.pos.utils.parser.ParserPagoResponse.parse;
 
 @Slf4j
