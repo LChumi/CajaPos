@@ -94,16 +94,8 @@ public class MedianetService {
         campos.add(CampoPP.SUBTOTAL0.build(normalizarMonto(d.getSubtotal0())));
         campos.add(CampoPP.IVA.build(normalizarMonto(d.getIva())));
 
-        if (esReverso) {
-            if (d.getHora() != null && !d.getHora().trim().isEmpty()) {
-                campos.add(CampoPP.HORA.build(d.getHora()));
-            } else {
-                throw new IllegalArgumentException("Hora es necesaria");
-            }
-        } else {
-            campos.add(CampoPP.HORA.build(obtenerHoraActual()));
-        }
         // Hora / Fecha
+        campos.add(CampoPP.HORA.build(d.getHora()));
         campos.add(CampoPP.FECHA.build(obtenerFechaActual()));
 
         // Identificadores
